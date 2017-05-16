@@ -4,7 +4,7 @@
 #
 Name     : gtkmm3
 Version  : 3.22.0
-Release  : 2
+Release  : 3
 URL      : http://ftp.gnome.org/pub/GNOME/sources/gtkmm/3.22/gtkmm-3.22.0.tar.xz
 Source0  : http://ftp.gnome.org/pub/GNOME/sources/gtkmm/3.22/gtkmm-3.22.0.tar.xz
 Summary  : C++ binding for the GTK+ toolkit, not installed
