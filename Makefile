@@ -1,5 +1,5 @@
 PKG_NAME := gtkmm3
-URL := http://ftp.gnome.org/pub/GNOME/sources/gtkmm/3.22/gtkmm-3.22.0.tar.xz
-ARCHIVES :=
+URL := https://download.gnome.org/sources/gtkmm/3.22/gtkmm-3.22.1.tar.xz
+
 
 include ../common/Makefile.common

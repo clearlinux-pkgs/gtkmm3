@@ -1,3 +1,209 @@
+2017-06-23  Murray Cumming  <murrayc@murrayc.com>
+
+	3.22.1
+
+2017-06-03  Daniel Boles  <dboles@src.gnome.org>
+
+	convert_gtk.m4: Remove redundant conversions
+
+	These are already defined in convert_glib.m4, which is included as-is.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=783136
+
+2017-06-03  Daniel Boles  <dboles.src@gmail.com>
+
+	gtk-demo/demowindow: Remove unnecessary null check
+
+	There is no way that the pointer d can become null here.
+
+2017-05-26  Daniel Boles  <dboles.src@gmail.com>
+
+	gtk-demo: Use #include <blah> for system headers
+
+	including our own and those from the stdlibs. This is more idiomatic, so
+	it makes for better example code to show users.
+
+2017-05-26  Daniel Boles  <dboles.src@gmail.com>
+
+	gtk-demo/example_headerbar: Remove an old comment
+
+	Nearly 3 years later, I think we can safely assume these icons are
+	available on the end-user’s system.
+
+2017-05-26  Daniel Boles  <dboles@src.gnome.org>
+
+	gtk-demo/demowindow: Order #includes correctly
+
+	in the spirit of
+	https://git.gnome.org/browse/gtk+/tree/docs/CODING-STYLE#n458
+
+	“Every file must include config.h first, then its own header, then other
+	GTK+ headers that it needs, then system and third-party headers that it
+	needs.”
+
+	For the “other GTK+ headers” part, I took the liberty of using the order
+	I normally follow, which is GLib headers followed by GIO ones followed
+	by GTK+ ones. I use this as it follows their order in the software stack
+
+2017-05-26  Daniel Boles  <dboles.src@gmail.com>
+
+	gtk-demo/demowindow: Use size_t to index in arrays
+
+	int or unsigned int are not guaranteed to be wide enough. Of course,
+	that will not matter in many practical cases, but it is better style to
+	always use std::size_t when the purpose is to index into an array.
+
+2017-05-26  Daniel Boles  <dboles@src.gnome.org>
+
+	gtk-demo/demowindow: Use auto
+
+2017-05-26  Daniel Boles  <dboles@src.gnome.org>
+
+	gtk-demo: Don’t remove_page() with invalid index
+
+	The decrement was in the iteration expression, so it happened after the
+	loop body. So on the first iteration, this would call remove_page() with
+	i == get_n_pages(), which is of course 1 past the maximal allowed index.
+
+2017-05-10  Daniel Boles  <dboles.src@gmail.com>
+
+	TreeView: Remove an obsolete comment
+
+	Commit 4504487c7 replaced the old C syntax (void*)0 with nullptr but did
+	not remove this comment, which referred to the original cast expression.
+
+2017-05-10  Daniel Boles  <dboles@src.gnome.org>
+
+	Box: Fix comments on constructor
+
+	• typo in internal comment
+	• wrong claim that it always creates a horizontal Box in documentation
+	comment – looks like a copy-and-paste error from the HBox/VBox days.
+
+2017-05-10  Daniel Boles  <dboles.src@gmail.com>
+
+	CellLayout: Improve docs of get_first_cell() funcs
+
+	They included the line “This assumes that the CellLayout contains only
+	one CellRenderer.” But that doesn’t matter: these methods always return
+	the first cell, without caring whether there are any others, and thus
+	users can call them without caring too. So, that comment had no purpose.
+
+	Also, these are ‘safe’ to call for Layouts containing no cells, in the
+	sense that they will return nullptr, so we might as well clarify that.
+
+2017-05-10  Daniel Boles  <dboles.src@gmail.com>
+
+	TreeModel: Improve docs of foreach*() functions
+
+	• Fix example slots to have the correct bool return type; they were void
+	• Don’t use example as 1st paragraph as it ends with ;. which looks odd
+	• Open by explaining what the typedef is for, with link to its foreach()
+	• For each foreach*(), name and link to its type of slot in the comment
+	• Use the actual function name in each case, instead of always foreach()
+
+2017-03-27  Daniel Boles  <dboles@src.gnome.org>
+
+	FileChooserDialog: Use static_cast, not C cast
+
+	static_cast is better C++ style and safer due to compile-time checking.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=780004
+
+2017-03-27  Daniel Boles  <dboles@src.gnome.org>
+
+	FileChooserDialog: Drop unneeded explicit on ctor
+
+	This is only useful to us if the constructor can be invoked with one
+	argument (i.e. it only has 1, or the subsequent have default values).
+	That is not true here, so the explicit keyword is a semantic mistake.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=780004
+
+2017-03-27  Kjell Ahlstedt  <kjell.ahlstedt@bredband.net>
+
+	Gtk::FileChooserDialog: Deprecate ctors with backend parameter
+
+	gtk_file_chooser_dialog_new_with_backend() was deprecated in gtk+ 2.14
+	and removed in gtk+-3. The corresponding ctors in FileChooserDialog should
+	have been removed in gtkmm-3.
+
+2017-02-02  Kjell Ahlstedt  <kjell.ahlstedt@bredband.net>
+
+	Gdk::Window: Deprecate process[_all]_updates()
+
+	gdk_window_process_all_updates() and gdk_window_process_updates()
+	have been deprecated in gtk+-3.
+
+2017-01-04  Chun-wei Fan  <fanchunwei@src.gnome.org>
+
+	Visual Studio builds: Fix projects
+
+	Add the missed source files and headers for the projects and
+	"installation".
+
+2016-12-31  Daniel Boles  <dboles@src.gnome.org>
+
+	label.ccg: update align args to match doc fix @ hg
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=774652
+
+2016-11-21  Kjell Ahlstedt  <kjell.ahlstedt@bredband.net>
+
+	Gtk::Frame: Fix the documentation of set_label_align()
+
+	Bug 774249
+
+2016-11-19  djb  <db0451@gmail.com>
+
+	Label: improve h/valign constructor doc comment
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=774652
+
+2016-11-19  djb  <db0451@gmail.com>
+
+	Label(): don't use misleading align argument names
+
+	These arguments are forwarded to set_halign() and set_valign(), yet they
+	were named xalign and yalign, which is especially confusing because
+	Label already has completely separate xalign and yalign properties.
+	This could lead to users getting confused when they think they're
+	setting one of these pairs of properties but actually setting the other.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=774652
+
+2016-11-05  Kjell Ahlstedt  <kjell.ahlstedt@bredband.net>
+
+	Gtk::Widget: Deprecate is_composited() and signal_composited_changed()
+
+	because they are deprecated in gtk+-3. Bug #773642.
+
+2016-10-31  Kjell Ahlstedt  <kjell.ahlstedt@bredband.net>
+
+	Deprecate API which is deprecated in gtk+-3
+
+	* gdk/src/screen.[ccg|hg]:
+	* gdk/src/visual.hg:
+	* gdk/src/window.hg:
+	* gtk/src/menu.[ccg|hg]:
+	* gtk/src/widget.hg:
+	* gtk/src/window.hg: Deprecate many methods.
+	* gtk/src/container.hg: Deprecate property_child(). Bug #773642.
+
+2016-10-31  Kjell Ahlstedt  <kjell.ahlstedt@bredband.net>
+
+	GtkMainConnectionNode: Remove unused method
+
+	* gtk/src/main.ccg: destroy_notify_handler() in the local GtkMainConnectionNode
+	class is not used. gcc 6.2 reports that as an error when building
+	with --enable-warnings=fatal. Remove the unused method.
+
+2016-09-22  Murray Cumming  <murrayc@murrayc.com>
+
+	Gdk::Pixbuf: Add commented-out get_pixels(length&) with TODO.
+
+	We can uncomment this after we branch.
+
 2016-09-20  Murray Cumming  <murrayc@murrayc.com>
 
 	3.22.0
