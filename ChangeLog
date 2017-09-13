@@ -1,3 +1,28 @@
+2017-09-13  Murray Cumming  <murrayc@murrayc.com>
+
+	3.22.2
+
+2017-07-11  Kjell Ahlstedt  <kjellahlstedt@gmail.com>
+
+	Gtk::PrintJob: Fix a call to Glib::throw_exception()
+
+	Glib::throw_exception(GError*) takes ownership of the GError.
+	SignalProxy_Custom_gtk_callback() must give a copy to throw_exception().
+
+2017-07-06  Daniel Boles  <dboles@src.gnome.org>
+
+	Gdk::RGBA: Update ctor(ustring) docs from GTK+
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=784483
+
+2017-06-27  Kjell Ahlstedt  <kjellahlstedt@gmail.com>
+
+	Gtk::Editable, RecentChooser, Scale: Fix memory leaks
+
+	Editable::get_chars_vfunc(), RecentChooser::get_current_uri_vfunc() and
+	Scale::signal_format_value() shall delete the returned character array
+	after it has been copied to a Glib::ustring. Bug 783360
+
 2017-06-23  Murray Cumming  <murrayc@murrayc.com>
 
 	3.22.1
