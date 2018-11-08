@@ -1,3 +1,157 @@
+2018-11-07  Kjell Ahlstedt  <kjellahlstedt@gmail.com>
+
+	3.22.3
+
+2018-11-02  Kjell Ahlstedt  <kjellahlstedt@gmail.com>
+
+	configure.ac: Update bug report address
+
+2018-11-02  Kjell Ahlstedt  <kjellahlstedt@gmail.com>
+
+	Gtk::Settings: Undeprecate some properties
+
+	* gtk/src/settings.hg: Undeprecate property_gtk_cursor_blink(),
+	property_gtk_cursor_blink_time(), property_gtk_cursor_blink_timeout(),
+	property_gtk_entry_password_hint_timeout().
+
+2018-10-29  Kjell Ahlstedt  <kjellahlstedt@gmail.com>
+
+	Update .gitignore
+
+2018-10-29  Chun-wei Fan  <fanchunwei@src.gnome.org>
+
+	build: Remove Visual Studio 2013 projects
+
+	Since the NMake Makefiles replaced the Visual Studio projects, this
+	commit drops them.
+
+2018-10-29  Chun-wei Fan  <fanchunwei@src.gnome.org>
+
+	build: Add NMake Makefiles for Visual Studio builds
+
+	This adds NMake Makefiles for Visual Studio 2013 and later, which will
+	replace the Visual Studio projects.  The main motivation for this is to
+	ease maintenace on the Visual Studio build files, especially as sources
+	are often added or removed, making the project files out-of-date as they
+	are not generated during 'dist make'.  This will share the various
+	filelist.am's so that any additions or removal of sources can be
+	reflected upon the Visual Studio builds immediately.
+
+	Since this is the C++-11 version of gtkmm which supports both Visual
+	Studio 2015 and 2017, we want to name the DLL and .lib to be like
+	<library>-vc140-3_0.[dll.lib] or <library>-vc140-d-3_0.[dll|lib] since
+	they both link to the v140 Windows C/C++ runtime DLLs, and thus these
+	DLLs and .lib's are advertised to be interoperable, as supported by
+	Microsoft.
+
+	Note that the master branch, which requires C++-17, is not changed
+	as Visual Studio 2017 is really required to build things there.
+
+	Note that as some code in the demos require compiler features that is
+	only available in Visual Studio 2015 or later, we only build the demos
+	if Visual Studio 2015 or later is used.
+
+2018-10-29  Chun-wei Fan  <fanchunwei@src.gnome.org>
+
+	build: Remove GNU Makeisms from filelist.am's
+
+	This is so that they can be used by the NMake Makefiles as well.
+
+2018-10-29  Chun-wei Fan  <fanchunwei@src.gnome.org>
+
+	gendef: Skip CRT symbols that are implemented inline
+
+	As a result to the move of UCRT for Visual Studio 2015 and later, some
+	of the CRT functions are no longer done in the CRT DLL, but are instead
+	implemented directly in the CRT headers.  We need to filter out these
+	symbols so that we can link the gtkmm DLL properly.
+
+	Unfortunately we cannot just link to legacy_stdio_definitions.lib to
+	resolve this, so we just have to strip these symbols out from the
+	generated gtkmm.def.
+
+2018-10-29  Chun-wei Fan  <fanchunwei@src.gnome.org>
+
+	build: Rename MSVC_Net2013 to MSVC_NMake
+
+	This prepares for the transition to NMake Makefiles for the Visual Studio
+	build system, which aims to reduce the likelihood of it becoming outdated
+	as it shares the filelist.am's with the autotools build system, instead
+	of being manually updated.
+
+2018-04-04  Kjell Ahlstedt  <kjellahlstedt@gmail.com>
+
+	Update the Menus demo
+
+	Don't mention the deprecated ImageMenuItem in the description.
+	Show the menu with accelerator keys.
+
+2018-02-11  Christian Schoenebeck  <schoenebeck@linuxsampler.org>
+
+	Gtk::MenuItem: Fix add_accel_label()
+
+	Make sure accelator keys are shown, by calling gtk_menu_item_set_label().
+
+	https://mail.gnome.org/archives/gtkmm-list/2018-February/msg00006.html
+
+2018-01-24  Kjell Ahlstedt  <kjellahlstedt@gmail.com>
+
+	Fix the Change Display demo
+
+	Make the demo more like the corresponding demo in gtk+, e.g. by using
+	Gdk::Seat::grab() and Gdk::Device::get_window_at_position().
+
+2017-12-28  Kjell Ahlstedt  <kjellahlstedt@gmail.com>
+
+	Gdk: Deprecate flush(), screen_width(), etc.
+
+	* gdk/gdkmm/general.[cc|h]: Decrecate Gdk::screen_width(), screen_height(),
+	screen_width_mm(), screen_height_mm(), flush(). They have been deprecated
+	in gtk+ 3.22.
+	* gtk/src/fontbutton.hg: Disable deprecation warnings when fontbutton.cc
+	is compiled. gtk_font_button_set/get_font_name() and property font-name
+	are deprecated in gtk+ 3.22 in favor of gtk_font_chooser_set/get_font() and
+	GtkFontChooser:font. They can't be deprecated in gtkmm 3.22 because
+	FontChooser is not a base class of FontButton.
+	* demos/gtk-demo/example_change_display.cc: Don't use the deprecated
+	Gdk::flush().
+
+2017-10-27  Kjell Ahlstedt  <kjellahlstedt@gmail.com>
+
+	Gtk::AboutDialog::get_logo(): Add refreturn
+
+2017-10-13  Kjell Ahlstedt  <kjellahlstedt@gmail.com>
+
+	Add a specialization for Glib::Value<Cairo::RefPtr<Cairo::Surface>>
+
+	* gtk/src/cellrendererpixbuf.hg: Add a specialization for
+	Glib::Value<Cairo::RefPtr<Cairo::Surface>>. A specialization for
+	Glib::Value<Cairo::RefPtr<T>> can't be put in glibmm, because glibmm does
+	not depend on cairomm. It can't be put in cairomm, because cairomm does
+	not depend on glibmm. It's needed for property_surface(). Bug 788513
+
+2017-10-09  Daniel Boles  <dboles.src@gmail.com>
+
+	class_gtkobject.m4|object.h: Fix GtkObject→GObject
+
+	GtkObject was moved down to the GLib level, as GObject, 2 versions ago.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=788587
+
+2017-09-13  Kjell Ahlstedt  <kjellahlstedt@gmail.com>
+
+	Update build/.gitignore
+
+2017-09-13  Kjell Ahlstedt  <kjellahlstedt@gmail.com>
+
+	tools/gen_scripts/: Update for gdk-pixbuf built with meson, and for gtk+-3
+
+	When gdk-pixbuf is built with meson instead of autotools, generated .h
+	and .c files are stored in gdk-pixbuf/build/gdk-pixbuf. Files in that
+	directory shall be read when the docs.xml and the .defs files are generated.
+
+	Read .h and .c files from the gtk+-3 directory.
+
 2017-09-13  Murray Cumming  <murrayc@murrayc.com>
 
 	3.22.2
