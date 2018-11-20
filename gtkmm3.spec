@@ -4,7 +4,7 @@
 #
 Name     : gtkmm3
 Version  : 3.22.3
-Release  : 10
+Release  : 11
 URL      : https://download.gnome.org/sources/gtkmm/3.22/gtkmm-3.22.3.tar.xz
 Source0  : https://download.gnome.org/sources/gtkmm/3.22/gtkmm-3.22.3.tar.xz
 Summary  : C++ binding for the GTK+ toolkit
@@ -23,14 +23,6 @@ BuildRequires : pkgconfig(pangomm-1.4)
 %description
 This is gtkmm, the C++ API for GTK+.
 See http://www.gtkmm.org/
-
-%package abi
-Summary: abi components for the gtkmm3 package.
-Group: Default
-
-%description abi
-abi components for the gtkmm3 package.
-
 
 %package data
 Summary: data components for the gtkmm3 package.
@@ -85,7 +77,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1541687748
+export SOURCE_DATE_EPOCH=1542737747
 %configure --disable-static
 make  %{?_smp_mflags}
 
@@ -97,7 +89,7 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make check ||:
 
 %install
-export SOURCE_DATE_EPOCH=1541687748
+export SOURCE_DATE_EPOCH=1542737747
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/gtkmm3
 cp COPYING %{buildroot}/usr/share/package-licenses/gtkmm3/COPYING
@@ -112,13 +104,6 @@ cp COPYING.tools %{buildroot}/usr/share/package-licenses/gtkmm3/COPYING.tools
 /usr/lib64/gtkmm-3.0/proc/m4/convert_gdk.m4
 /usr/lib64/gtkmm-3.0/proc/m4/convert_gtk.m4
 /usr/lib64/gtkmm-3.0/proc/m4/convert_gtkmm.m4
-
-%files abi
-%defattr(-,root,root,-)
-/usr/share/abi/libgdkmm-3.0.so.1.1.0.abi
-/usr/share/abi/libgdkmm-3.0.so.1.abi
-/usr/share/abi/libgtkmm-3.0.so.1.1.0.abi
-/usr/share/abi/libgtkmm-3.0.so.1.abi
 
 %files data
 %defattr(-,root,root,-)
