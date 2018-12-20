@@ -1,41 +1,65 @@
+2018-11-08  Kjell Ahlstedt  <kjellahlstedt@gmail.com>
+
+	3.24.0
+
+2018-11-08  Kjell Ahlstedt  <kjellahlstedt@gmail.com>
+
+	Gtk::FileChooserDialog: Allow constructing with use-header-bar
+
+	This is a construct-only property, so it must be specified in a constructor.
+	Bug #780004 (Daniel Boles)
+
 2018-11-07  Kjell Ahlstedt  <kjellahlstedt@gmail.com>
 
-	3.22.3
+	Add Gtk::NativeDialog and Gtk::FileChooserNative
 
-2018-11-02  Kjell Ahlstedt  <kjellahlstedt@gmail.com>
+	Bug 783801
+
+2018-11-07  Kjell Ahlstedt  <kjellahlstedt@gmail.com>
+
+	Regenerate gtk_signals.defs
+
+	Bug 783801
+
+2018-11-07  Kjell Ahlstedt  <kjellahlstedt@gmail.com>
+
+	generate_defs_gtk.cc: Add NativeDialog and FileChooserNative
+
+	Bug 783801
+
+2018-11-07  Kjell Ahlstedt  <kjellahlstedt@gmail.com>
+
+	demos: Fix minor bug at a call to Gtk::make_managed()
+
+	The newly introduced calls to make_managed() contained a bug.
+
+2018-11-04  Murray Cumming  <murrayc@murrayc.com>
+
+	Gtk::AboutDialog: Add constructor with a use_header_bar parameter
+
+	Bug #780004 (Daniel Boles)
+
+2018-11-04  Kjell Ahlstedt  <kjellahlstedt@gmail.com>
+
+	Gdk::GLContext: Add unset_use_es()
+
+	Bug #787898
+
+2018-11-04  Daniel Boles  <dboles.src@gmail.com>
+
+	Gtk::Window: Wrap gtk_show_uri_on_window()
+
+	This is a very useful function that gtkmm did not wrap until now.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=787242
+
+2018-10-26  Kjell Ahlstedt  <kjellahlstedt@gmail.com>
 
 	configure.ac: Update bug report address
 
-2018-11-02  Kjell Ahlstedt  <kjellahlstedt@gmail.com>
+2018-10-25  Chun-wei Fan  <fanchunwei@src.gnome.org>
 
-	Gtk::Settings: Undeprecate some properties
-
-	* gtk/src/settings.hg: Undeprecate property_gtk_cursor_blink(),
-	property_gtk_cursor_blink_time(), property_gtk_cursor_blink_timeout(),
-	property_gtk_entry_password_hint_timeout().
-
-2018-10-29  Kjell Ahlstedt  <kjellahlstedt@gmail.com>
-
-	Update .gitignore
-
-2018-10-29  Chun-wei Fan  <fanchunwei@src.gnome.org>
-
-	build: Remove Visual Studio 2013 projects
-
-	Since the NMake Makefiles replaced the Visual Studio projects, this
-	commit drops them.
-
-2018-10-29  Chun-wei Fan  <fanchunwei@src.gnome.org>
-
-	build: Add NMake Makefiles for Visual Studio builds
-
-	This adds NMake Makefiles for Visual Studio 2013 and later, which will
-	replace the Visual Studio projects.  The main motivation for this is to
-	ease maintenace on the Visual Studio build files, especially as sources
-	are often added or removed, making the project files out-of-date as they
-	are not generated during 'dist make'.  This will share the various
-	filelist.am's so that any additions or removal of sources can be
-	reflected upon the Visual Studio builds immediately.
+	MSVC_NMake/config-msvc.mak: Use $(PDBVER) in DLL names
 
 	Since this is the C++-11 version of gtkmm which supports both Visual
 	Studio 2015 and 2017, we want to name the DLL and .lib to be like
@@ -47,17 +71,142 @@
 	Note that the master branch, which requires C++-17, is not changed
 	as Visual Studio 2017 is really required to build things there.
 
+2018-10-23  Daniel Boles  <dboles.src@gmail.com>
+
+	MenuItem: Fix typo altough => although
+
+2018-10-20  Daniel Boles  <dboles.src@gmail.com>
+
+	Container: ForeachSlot takes Widget&, not Widget*
+
+	Fix the example, and while here, add an introductory line for the type,
+	and mirror master in putting a line <br>eak between the text and code.
+
+2018-10-07  Daniel Boles  <dboles.src@gmail.com>
+
+	object: Add Gtk::make_managed<T>(args...) helper
+
+	To avoid the discouraged pattern of manually writing `new` and get
+	tidier syntax, follow the example of std::make_(unique|shared)() by
+	adding a new helper function that both constructs and manages a widget
+	in one call. The user will not need to `new` and can user fewer parens.
+
+	auto button = Gtk::manage(new Gtk::Button("_Hi", true));
+
+	becomes
+
+	auto button = Gtk::make_managed<Gtk::Button>("_Hi", true);
+
+	Switch to make_managed() in tests and demo, albeit nowhere else (yet?).
+
+	https://gitlab.gnome.org/GNOME/gtkmm/issues/33
+
+2018-10-07  Daniel Boles  <dboles.src@gmail.com>
+
+	gtk-demo/demowindow: Avoid compiler warning by g++
+
+	Flip the if/else case so that the /* Fall through */ comment comes
+	before the next case label, which suppresses a warning from
+	-Wimplicit-fallthrough and looks clearer anyway.
+
+2018-10-07  Daniel Boles  <dboles.src@gmail.com>
+
+	Image: Fix a typo
+
+2018-09-08  Kjell Ahlstedt  <kjellahlstedt@gmail.com>
+
+	Gtk: Add detail_name to some _WRAP_SIGNAL()s
+
+	* gtk/src/accelgroup.hg: Add detail_name to signal_accel_changed().
+	Deprecate signal_accel_activate(), which should never have been wrapped.
+	* gtk/src/appchooserbutton.hg: signal_custom_item_activated().
+	* gtk/src/levelbar.hg: signal_offset_changed().
+	* gtk/src/widget.hg: signal_child_notify().
+
+2018-09-08  Kjell Ahlstedt  <kjellahlstedt@gmail.com>
+
+	Gtk::Range, Settings: Update some deprecations
+
+	* gtk/src/range.hg: Deprecate property_[lower|upper]_stepper_sensitivity().
+	* gtk/src/settings.hg: Undeprecate property_gtk_cursor_blink(),
+	property_gtk_cursor_blink_time(),property_gtk_cursor_blink_timeout(),
+	property_gtk_entry_password_hint_timeout().
+
+2018-09-08  Kjell Ahlstedt  <kjellahlstedt@gmail.com>
+
+	Gdk, Gtk: Regenerate docs.xml and .defs files
+
+	and update gtk_signals.defs.patch.
+
+2018-09-08  Kjell Ahlstedt  <kjellahlstedt@gmail.com>
+
+	Add tools/gen_scripts/generate_docs_and_defs.sh
+
+2018-09-08  Kjell Ahlstedt  <kjellahlstedt@gmail.com>
+
+	Fix the generation of reference documentation
+
+	* docs/Makefile.am: Include the filelist.gmake.am files.
+	* gdk/gdkmm/filelist.gmake.am:
+	* gdk/src/filelist.gmake.am:
+	* gtk/gtkmm/filelist.gmake.am:
+	* gtk/src/filelist.gmake.am: The search path of the filelist.am files
+	start from $(top_srcdir) instead of $(srcdir). Necessary when the
+	filelist.gmake.am files are included in docs/Makefile.am.
+
+2018-09-07  Kjell Ahlstedt  <kjellahlstedt@gmail.com>
+
+	Update .gitignore
+
+2018-09-07  Kjell Ahlstedt  <kjellahlstedt@gmail.com>
+
+	docs_override.xml files: Add substitute_[type|enumerator]_name elements
+
+	* gdk/src/gdk_docs_override.xml:
+	* gtk/src/gtk_docs_override.xml: Applicable substitute_type_name and
+	substitute_enumerator_name elements have been copied from the corresponding
+	files in the master branch (gtkmm-4). Fixes #19
+
+2018-09-07  Kjell Ahlstedt  <kjellahlstedt@gmail.com>
+
+	configure.ac: Require giomm-2.4 >= 2.54.0
+
+	Glibmm 2.54.0 introduces useful features in gmmproc:
+	- Accept curly braces in default values in _WRAP macros.
+	- Add new element types for the docs_override.xml files:
+	substitute_type_name and substitute_enumerator_name.
+	And more.
+
+2018-09-07  Chun-wei Fan  <fanchunwei@src.gnome.org>
+
+	build: Remove Visual Studio 2013 projects
+
+	Since the NMake Makefiles replaced the Visual Studio projects, this
+	commit drops them.
+
+2018-09-07  Chun-wei Fan  <fanchunwei@src.gnome.org>
+
+	build: Add NMake Makefiles for Visual Studio builds
+
+	This adds NMake Makefiles for Visual Studio 2013 and later, which will
+	replace the Visual Studio projects.  The main motivation for this is to
+	ease maintenace on the Visual Studio build files, especially as sources
+	are often added or removed, making the project files out-of-date as they
+	are not generated during 'dist make'.  This will share the various
+	filelist.am's so that any additions or removal of sources can be
+	reflected upon the Visual Studio builds immediately.
+
 	Note that as some code in the demos require compiler features that is
 	only available in Visual Studio 2015 or later, we only build the demos
 	if Visual Studio 2015 or later is used.
 
-2018-10-29  Chun-wei Fan  <fanchunwei@src.gnome.org>
+2018-09-07  Chun-wei Fan  <fanchunwei@src.gnome.org>
 
 	build: Remove GNU Makeisms from filelist.am's
 
 	This is so that they can be used by the NMake Makefiles as well.
 
-2018-10-29  Chun-wei Fan  <fanchunwei@src.gnome.org>
+2018-09-07  Chun-wei Fan  <fanchunwei@src.gnome.org>
 
 	gendef: Skip CRT symbols that are implemented inline
 
@@ -70,7 +219,7 @@
 	resolve this, so we just have to strip these symbols out from the
 	generated gtkmm.def.
 
-2018-10-29  Chun-wei Fan  <fanchunwei@src.gnome.org>
+2018-09-07  Chun-wei Fan  <fanchunwei@src.gnome.org>
 
 	build: Rename MSVC_Net2013 to MSVC_NMake
 
@@ -78,6 +227,136 @@
 	build system, which aims to reduce the likelihood of it becoming outdated
 	as it shares the filelist.am's with the autotools build system, instead
 	of being manually updated.
+
+2018-08-29  Luca Bacci  <luca.bacci982@gmail.com>
+
+	Document Gtk::CSsProviderError as @newin{3,16}
+
+2018-08-24  Kjell Ahlstedt  <kjellahlstedt@gmail.com>
+
+	Gtk::Widget: The show-all API is not deprecated in gtk+ any more
+
+	Remove the G_GNUC_[BEGIN,END]_IGNORE_DEPRECATIONS around the show_all
+	methods.
+	See https://gitlab.gnome.org/GNOME/gtk/commit/da8994f941460206106255112ebe7dcd36b83065
+	and https://gitlab.gnome.org/GNOME/gtk/issues/1282
+
+2018-08-24  Kjell Ahlstedt  <kjellahlstedt@gmail.com>
+
+	Gtk:MenuItem, Menus demo: Avoid the deprecated get_accel_group()
+
+	* demos/gtk-demo/example_menus.cc: Don't use Gtk::Window::get_accel_group().
+	* gtk/src/menuitem.ccg: accelerate(): Don't use get_accel_group(), if
+	gtkmm is built without deprecated API. See issue #18
+
+2018-08-24  Daniel Boles  <dboles@src.gnome.org>
+
+	Gtk::Window: Move to a proper get_accel_groups()
+
+	The existing get_accel_group() just creates a per-window AccelGroup on
+	demand and returns it. That’s no use if you need groups that were added
+	by other sources, e.g. by Gtk::Builder, Glade, etc.
+
+	Deprecate that, in favour of a new get_accel_groups(), which wraps
+	gtk_accel_groups_from_object() to return the actual set of AccelGroups.
+
+	Note that gtk_accel_groups_from_object() takes a GObject, which it says
+	is usually a GtkWindow. I therefore assume users will only want to get
+	groups from a Window.
+
+	While here:
+	- Add a . to the Doxygen comment to tell it the 1st line is a summary
+	- Don’t say the default group can’t be removed; I see no reason why not
+	- Remove speculative comments on the old code, now explained elsewhere.
+
+	Fixes #18
+
+2018-08-23  Kjell Ahlstedt  <kjellahlstedt@gmail.com>
+
+	Gtk::Image: Add more constructors
+
+	Add 3 constructors, taking an icon name, a Gio::Icon and a Cairo::Surface,
+	respectively.
+
+	Fixes issue #35
+
+2018-08-22  Kjell Ahlstedt  <kjellahlstedt@gmail.com>
+
+	Pixbufs demo: Use Gdk::FrameClock
+
+	The corresponding demo in gtk+ uses GdkFrameClock.
+
+	Also, make the pixbufs demo in gtkmm more C++'ish by minimizing the use
+	of #define and using math functions from <cmath> instead of <math.h>.
+
+2018-08-22  Kjell Ahlstedt  <kjellahlstedt@gmail.com>
+
+	Gdk::Window, Gtk::StyleContext, Widget: Add FrameClock API
+
+	* gdk/src/window.[ccg|hg]: Add get_frame_clock().
+	* gtk/src/stylecontext.[ccg|hg]: Add set/get_frame_clock() and
+	property_paint_clock().
+	* gtk/src/widget.[ccg|hg]: Add get_frame_clock(), add_tick_callback() and
+	remove_tick_callback().
+
+2018-08-22  Kjell Ahlstedt  <kjellahlstedt@gmail.com>
+
+	Add Gdk::FrameClock and Gdk::FrameTimings
+
+	* gdk/src/frameclock.[ccg|hg]:
+	* gdk/src/frametimings.[ccg|hg]: New files.
+	* .gitignore:
+	* gdk/gdkmm.h:
+	* gdk/src/filelist.am: Add new filenames.
+	* gdk/src/gdk_extra_objects.defs: Add new objects.
+	* gdk/src/gdk_signals.defs: Add GdkFrameClock's signals.
+	* tools/extra_defs_gen/generate_defs_gdk.cc: Add GDK_TYPE_FRAME_CLOCK.
+	* tools/m4/convert_gdk.m: Add conversions for GdkFrameClock and
+	GdkFrameTimings.
+
+	Fixes #23
+
+2018-08-21  Kjell Ahlstedt  <kjellahlstedt@gmail.com>
+
+	Add Gdk::Cairo::create_surface_from_pixbuf()
+
+	and Gdk::Cairo::get_clip_rectangle(), create_region_from_surface(),
+	draw_from_gl(). Fixes #25
+
+2018-08-20  Kjell Ahlstedt  <kjellahlstedt@gmail.com>
+
+	Gtk::Grid: Add default values in attach()
+
+	Add default value = 1 for the width and height parameters in attach() and
+	attach_next_to(). Fixes #20
+
+2018-08-19  Kjell Ahlstedt  <kjellahlstedt@gmail.com>
+
+	Gtk::Container: Deprecate focus chains
+
+	gtk_container_[set,unset,get]_focus_chain() have been deprecated
+	in branch gtk-3-24.
+
+2018-08-19  Kjell Ahlstedt  <kjellahlstedt@gmail.com>
+
+	Gtk::Widget: Don't deprecate the show-all API
+
+	The show-all API has been deprecated in gtk+ 3.24, but that may have been
+	a premature action. It's still used in many gtk+ demo programs.
+	Add G_GNUC_[BEGIN,END]_IGNORE_DEPRECATIONS to be able to use the deprecated
+	gtk+ functions in non-deprecated gtkmm methods.
+
+2018-08-19  Kjell Ahlstedt  <kjellahlstedt@gmail.com>
+
+	Gtk::StyleContext: Deprecate render_frame_gap()
+
+	gtk_render_frame_gap() has been deprecated in branch gtk-3-24.
+
+2018-08-19  Kjell Ahlstedt  <kjellahlstedt@gmail.com>
+
+	Gtk::CssProvider: Deprecate get_default()
+
+	gtk_css_provider_get_default() has been deprecated in branch gtk-3-24.
 
 2018-04-04  Kjell Ahlstedt  <kjellahlstedt@gmail.com>
 
