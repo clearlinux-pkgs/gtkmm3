@@ -4,7 +4,7 @@
 #
 Name     : gtkmm3
 Version  : 3.24.2
-Release  : 16
+Release  : 17
 URL      : https://download.gnome.org/sources/gtkmm/3.24/gtkmm-3.24.2.tar.xz
 Source0  : https://download.gnome.org/sources/gtkmm/3.24/gtkmm-3.24.2.tar.xz
 Summary  : C++ binding for the GTK+ toolkit, not installed
@@ -72,20 +72,21 @@ license components for the gtkmm3 package.
 
 %prep
 %setup -q -n gtkmm-3.24.2
+cd %{_builddir}/gtkmm-3.24.2
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1572448957
+export SOURCE_DATE_EPOCH=1586236611
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
 export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
-export FCFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
-export FFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
+export FCFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=4 "
+export FFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=4 "
 export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=4 "
 %configure --disable-static
 make  %{?_smp_mflags}
@@ -98,7 +99,7 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make check ||:
 
 %install
-export SOURCE_DATE_EPOCH=1572448957
+export SOURCE_DATE_EPOCH=1586236611
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/gtkmm3
 cp %{_builddir}/gtkmm-3.24.2/COPYING %{buildroot}/usr/share/package-licenses/gtkmm3/01a6b4bf79aca9b556822601186afab86e8c4fbf
