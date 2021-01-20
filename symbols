@@ -10167,6 +10167,7 @@ libgtkmm-3.0.so.1:_ZN3GtkneERKNS_8TextIterES2_
 libgtkmm-3.0.so.1:_ZN3GtkneERKNS_8TreePathES2_
 libgtkmm-3.0.so.1:_ZN4Glib21destroy_notify_deleteIN4sigc4slotIFbRKNS_6RefPtrIN3Gdk10FrameClockEEEENS1_3nilESA_SA_SA_SA_SA_SA_EEEEvPv
 libgtkmm-3.0.so.1:_ZN4Glib21destroy_notify_deleteIN4sigc4slotIPN3Gtk6WidgetERKNS_6RefPtrINS_6ObjectEEENS1_3nilESB_SB_SB_SB_SB_EEEEvPv
+libgtkmm-3.0.so.1:_ZN4Glib21destroy_notify_deleteINS_11VariantBaseEEEvPv
 libgtkmm-3.0.so.1:_ZN4Glib21destroy_notify_deleteINS_7ustringEEEvPv
 libgtkmm-3.0.so.1:_ZN4Glib4wrapEP10_GtkActionb
 libgtkmm-3.0.so.1:_ZN4Glib4wrapEP10_GtkBorderb
