@@ -4,7 +4,7 @@
 #
 Name     : gtkmm3
 Version  : 3.24.7
-Release  : 24
+Release  : 25
 URL      : https://download.gnome.org/sources/gtkmm/3.24/gtkmm-3.24.7.tar.xz
 Source0  : https://download.gnome.org/sources/gtkmm/3.24/gtkmm-3.24.7.tar.xz
 Summary  : C++ binding for the GTK+ toolkit
