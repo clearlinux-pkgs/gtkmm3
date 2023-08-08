@@ -1,4 +1,4 @@
-3.24.7
+3.24.8
 doxygen
 pkgconfig(atkmm-1.6)
 pkgconfig(mm-common-libstdc++)

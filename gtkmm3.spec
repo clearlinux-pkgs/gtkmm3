@@ -4,10 +4,10 @@
 # Using build pattern: meson
 #
 Name     : gtkmm3
-Version  : 3.24.7
-Release  : 27
-URL      : https://download.gnome.org/sources/gtkmm/3.24/gtkmm-3.24.7.tar.xz
-Source0  : https://download.gnome.org/sources/gtkmm/3.24/gtkmm-3.24.7.tar.xz
+Version  : 3.24.8
+Release  : 28
+URL      : https://download.gnome.org/sources/gtkmm/3.24/gtkmm-3.24.8.tar.xz
+Source0  : https://download.gnome.org/sources/gtkmm/3.24/gtkmm-3.24.8.tar.xz
 Summary  : C++ binding for the GTK+ toolkit
 Group    : Development/Tools
 License  : GPL-2.0 LGPL-2.1
@@ -25,11 +25,8 @@ BuildRequires : pkgconfig(mm-common-libstdc++)
 %define debug_package %{nil}
 
 %description
-This is gtkmm, the C++ API for GTK.
-See http://www.gtkmm.org/
-# Building
-Whenever possible, you should use the official binary packages approved by the
-supplier of your operating system, such as your Linux distribution.
+This directory contains files not tracked by a source code control program,
+The files can have one of two origins.
 
 %package dev
 Summary: dev components for the gtkmm3 package.
@@ -60,25 +57,30 @@ license components for the gtkmm3 package.
 
 
 %prep
-%setup -q -n gtkmm-3.24.7
-cd %{_builddir}/gtkmm-3.24.7
+%setup -q -n gtkmm-3.24.8
+cd %{_builddir}/gtkmm-3.24.8
+pushd ..
+cp -a gtkmm-3.24.8 buildavx2
+popd
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1680035575
+export SOURCE_DATE_EPOCH=1691503712
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz "
-export FCFLAGS="$FFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz "
-export FFLAGS="$FFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz "
-export CXXFLAGS="$CXXFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz "
+export CFLAGS="$CFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz=zstd "
+export FCFLAGS="$FFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz=zstd "
+export FFLAGS="$FFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz=zstd "
+export CXXFLAGS="$CXXFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz=zstd "
 CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" LDFLAGS="$LDFLAGS" meson --libdir=lib64 --prefix=/usr --buildtype=plain   builddir
 ninja -v -C builddir
+CFLAGS="$CFLAGS -m64 -march=x86-64-v3 -Wl,-z,x86-64-v3 -O3" CXXFLAGS="$CXXFLAGS -m64 -march=x86-64-v3 -Wl,-z,x86-64-v3 " LDFLAGS="$LDFLAGS -m64 -march=x86-64-v3" meson --libdir=lib64 --prefix=/usr --buildtype=plain   builddiravx2
+ninja -v -C builddiravx2
 
 %check
 export LANG=C.UTF-8
@@ -91,7 +93,9 @@ make check ||:
 mkdir -p %{buildroot}/usr/share/package-licenses/gtkmm3
 cp %{_builddir}/gtkmm-%{version}/COPYING %{buildroot}/usr/share/package-licenses/gtkmm3/01a6b4bf79aca9b556822601186afab86e8c4fbf || :
 cp %{_builddir}/gtkmm-%{version}/COPYING.tools %{buildroot}/usr/share/package-licenses/gtkmm3/06877624ea5c77efe3b7e39b0f909eda6e25a4ec || :
+DESTDIR=%{buildroot}-v3 ninja -C builddiravx2 install
 DESTDIR=%{buildroot} ninja -C builddir install
+/usr/bin/elf-move.py avx2 %{buildroot}-v3 %{buildroot} %{buildroot}/usr/share/clear/filemap/filemap-%{name}
 
 %files
 %defattr(-,root,root,-)
@@ -658,6 +662,8 @@ DESTDIR=%{buildroot} ninja -C builddir install
 
 %files lib
 %defattr(-,root,root,-)
+/V3/usr/lib64/libgdkmm-3.0.so.1.1.0
+/V3/usr/lib64/libgtkmm-3.0.so.1.1.0
 /usr/lib64/libgdkmm-3.0.so.1
 /usr/lib64/libgdkmm-3.0.so.1.1.0
 /usr/lib64/libgtkmm-3.0.so.1
